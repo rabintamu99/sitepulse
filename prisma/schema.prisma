@@ -12,3 +12,82 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  name      String?
+  role      Role      @default(USER)
+  websites  Website[]
+  alerts    Alert[]
+  reports   Report[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Website {
+  id          Int       @id @default(autoincrement())
+  name        String
+  url         String    @unique
+  ownerId     Int
+  owner       User      @relation(fields: [ownerId], references: [id])
+  status      String
+  ttfb        Float?
+  sslInfo     Json?
+  error       String?
+  metrics     Metric[]
+  reports     Report[]
+  alerts      Alert[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Metric {
+  id          Int       @id @default(autoincrement())
+  websiteId   Int
+  website     Website   @relation(fields: [websiteId], references: [id])
+  responseTime Float
+  uptime      Float
+  errorRate   Float
+  recordedAt  DateTime  @default(now())
+}
+
+model Alert {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  websiteId   Int
+  website     Website   @relation(fields: [websiteId], references: [id])
+  type        AlertType
+  message     String
+  createdAt   DateTime  @default(now())
+}
+
+model Report {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  websiteId   Int
+  website     Website   @relation(fields: [websiteId], references: [id])
+  reportType  ReportType
+  content     String
+  generatedAt DateTime  @default(now())
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum AlertType {
+  DOWNTIME
+  PERFORMANCE
+  ERROR
+}
+
+enum ReportType {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
