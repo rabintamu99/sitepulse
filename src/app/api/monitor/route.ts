@@ -1,11 +1,13 @@
-// app/api/monitor/route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 import tls from 'tls';
 import url from 'url';
 import { performance } from 'perf_hooks';
+import { PrismaClient } from '@prisma/client';
 
-async function getSSLInfo(targetUrl: string) {
+const prisma = new PrismaClient();
+
+async function getSSLInfo(targetUrl: string): Promise<{ valid_from: string; valid_to: string; issuer: any; subject: any }> {
   return new Promise((resolve, reject) => {
     const { hostname, port } = url.parse(targetUrl);
     const options = {
@@ -49,8 +51,27 @@ export async function GET(request: Request) {
     const end = performance.now();
     const responseTime = end - start;
 
-    const ttfb = response.headers['request-startTime'] ? response.headers['request-startTime'] - start : null;
+    const ttfb = response.headers['request-startTime'] ? parseFloat(response.headers['request-startTime']) - start : null;
     const sslInfo = await getSSLInfo(targetUrl);
+
+    // Save website and status to the database
+    await prisma.website.upsert({
+      where: { url: targetUrl },
+      update: {
+        status: response.status,
+        responseTime: responseTime,
+        ttfb: ttfb,
+        sslInfo: sslInfo,
+        error: null,
+      },
+      create: {
+        url: targetUrl,
+        status: response.status,
+        responseTime: responseTime,
+        ttfb: ttfb,
+        sslInfo: sslInfo,
+      },
+    });
 
     return NextResponse.json({
       status: "your site is up",
@@ -63,6 +84,20 @@ export async function GET(request: Request) {
       sslInfo,
     });
   } catch (error) {
+    // Save website status as down in the database
+    await prisma.website.upsert({
+      where: { url: targetUrl },
+      update: {
+        status: 'down',
+        error: (error as Error).message,
+      },
+      create: {
+        url: targetUrl,
+        status: 'down',
+        error: (error as Error).message,
+      },
+    });
+
     return NextResponse.json({
       status: 'down',
       error: (error as Error).message,
