@@ -32,10 +32,10 @@ const testimonials = [
 
 export default function Testimonials() {
     return (
-        <section id="testimonials" className="py-20 bg-[#0a0a0a]">
+        <section id="testimonials" className="py-10">
           <div className="container mx-auto">
-            <h2 className="text-3xl font-bold text-center text-white mb-2">What Our Users Are Saying</h2>
-            <p className="text-center text-white mb-10">Real feedback from real users who have experienced the power of SitePulse.</p>
+            <h2 className="text-3xl font-bold text-center mb-2">What Our Users Are Saying</h2>
+            <p className="text-center mb-10">Real feedback from real users who have experienced the power of SitePulse.</p>
             <InfiniteMovingCards
               items={testimonials}
               direction="right"

@@ -11,17 +11,17 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-5 bg-[#0a0a0a]">
+    <section id="features" className="py-5">
       <div className="container mx-auto">
-      <h2 className="text-3xl font-bold text-center text-white mb-2">Discover the Power of SitePulse</h2>
-      <p className="text-center text-white mb-10">Explore the features that make SitePulse the ultimate tool for website monitoring and performance.</p>
+      <h2 className="text-3xl font-bold text-center  mb-2">Discover the Power of SitePulse</h2>
+      <p className="text-center  mb-10">Explore the features that make SitePulse the ultimate tool for website monitoring and performance.</p>
         <div className="grid gap-8 mt-10 md:grid-cols-3">
            <WobbleCard
         containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]"
         className=""
       >
         <div className="max-w-xs">
-          <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+          <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] ">
             {features[0].title}
           </h2>
           <p className="mt-4 text-left  text-base/6 text-neutral-200">
@@ -37,16 +37,16 @@ export default function Features() {
         />
       </WobbleCard>
       <WobbleCard containerClassName="col-span-1 min-h-[300px]">
-        <h2 className="max-w-80  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+        <h2 className="max-w-80  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] ">
           {features[1].title}
         </h2>
-        <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-white">
+        <p className="mt-4 max-w-[26rem] text-left  text-base/6 ">
          {features[1].description}
         </p>
       </WobbleCard>
       <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-blue-900 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
         <div className="max-w-sm">
-          <h2 className="max-w-sm md:max-w-lg  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+          <h2 className="max-w-sm md:max-w-lg  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] ">
             {features[2].title}
           </h2>
           <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">

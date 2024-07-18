@@ -36,6 +36,7 @@ async function getSSLInfo(targetUrl: string): Promise<{ valid_from: string; vali
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const targetUrl = searchParams.get('url');
+  console.log(targetUrl);
 
   if (!targetUrl) {
     return NextResponse.json({ error: 'enter the url of the site you want to monitor' }, { status: 400 });
@@ -55,26 +56,27 @@ export async function GET(request: Request) {
     const sslInfo = await getSSLInfo(targetUrl);
 
     // Save website and status to the database
-    await prisma.website.upsert({
-      where: { url: targetUrl },
-      update: {
-        status: response.status,
-        responseTime: responseTime,
-        ttfb: ttfb,
-        sslInfo: sslInfo,
-        error: null,
-      },
-      create: {
-        url: targetUrl,
-        status: response.status,
-        responseTime: responseTime,
-        ttfb: ttfb,
-        sslInfo: sslInfo,
-      },
-    });
+    // await prisma.website.upsert({
+    //   where: { url: targetUrl },
+    //   update: {
+    //     status: response.status,
+    //     responseTime: responseTime,
+    //     ttfb: ttfb,
+    //     sslInfo: sslInfo,
+    //     error: null,
+    //   },
+    //   create: {
+    //     url: targetUrl,
+    //     status: response.status,
+    //     responseTime: responseTime,
+    //     ttfb: ttfb,
+    //     sslInfo: sslInfo,
+    //   },
+    // });
 
     return NextResponse.json({
-      status: "your site is up",
+      siteName: targetUrl,
+      status: "Up",
       statusCode: response.status,
       statusText: response.statusText,
       headers: response.headers,
@@ -85,18 +87,18 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     // Save website status as down in the database
-    await prisma.website.upsert({
-      where: { url: targetUrl },
-      update: {
-        status: 'down',
-        error: (error as Error).message,
-      },
-      create: {
-        url: targetUrl,
-        status: 'down',
-        error: (error as Error).message,
-      },
-    });
+    // await prisma.website.upsert({
+    //   where: { url: targetUrl },
+    //   update: {
+    //     status: 'down',
+    //     error: (error as Error).message,
+    //   },
+    //   create: {
+    //     url: targetUrl,
+    //     status: 'down',
+    //     error: (error as Error).message,
+    //   },
+    // });
 
     return NextResponse.json({
       status: 'down',
