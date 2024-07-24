@@ -11,8 +11,9 @@ import {
 import { menuOptions } from '@/lib/constant'
 import clsx from 'clsx'
 import { Separator } from '@/components/ui/separator'
-import { Database, GitBranch, LucideMousePointerClick } from 'lucide-react'
+import { ActivityIcon, Book, CircleAlert, CircleCheck, CircleHelpIcon, Database, GitBranch, Headphones, LucideMousePointerClick } from 'lucide-react'
 import { ModeToggle } from '../ui/mode-toogle'
+import { ActivityLogIcon } from '@radix-ui/react-icons'
 
 type Props = {}
 
@@ -23,10 +24,11 @@ const MenuOptions = (props: Props) => {
     <nav className=" dark:bg-black h-screen overflow-scroll  justify-between flex items-center flex-col  gap-10 py-6 px-2">
       <div className="flex items-center justify-center flex-col gap-8">
         <Link
-          className="flex font-bold flex-row "
+          className="flex font-bold flex-row items-center "
           href="/"
         >
-          SitePulse.
+        <span>Site</span>
+        <ActivityIcon className="w-4 h-4" />
         </Link>
         <TooltipProvider>
           {menuOptions.map((menuItem) => (
@@ -39,7 +41,7 @@ const MenuOptions = (props: Props) => {
                       className={clsx(
                         'group h-10 w-10 flex items-center justify-center  scale-[1] rounded-full cursor-pointer',
                         {
-                          'dark:bg-[#6a6a6a] bg-[#f1f0f0] ':
+                          'dark:bg-neutral-700 bg-[#f1f0f0] ':
                             pathName === menuItem.href,
                         }
                       )}
@@ -92,6 +94,26 @@ const MenuOptions = (props: Props) => {
         </div> */}
       </div>
       <div className="flex items-center justify-center flex-col gap-8">
+      <TooltipProvider>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger>
+            <Headphones className='text-muted-foreground' />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Contact Support</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger>
+            <CircleHelpIcon className='text-muted-foreground' />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Help</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
         <ModeToggle />
       </div>
     </nav>

@@ -1,13 +1,12 @@
-
 import React from 'react'
-
+import IntegrationComponent from '@/components/IntegrationComponent'
 
 type Props = {}
 
-const Settings = async (props) => {
+export default function Connections() {
 
   return (
-    <div className="flex flex-col gap-2 max-w-[1000px] mx-auto mt-5">
+    <div className="flex flex-col gap-2 max-w-[1200px] mx-auto mt-5">
       <h1 className="sticky top-0 z-[10] flex items-center justify-between bg-background/50 text-2xl backdrop-blur-lg">
         <span>Connections</span>
       </h1>
@@ -19,9 +18,8 @@ const Settings = async (props) => {
           Line for alert management.
           </p>
         </div>
+        <IntegrationComponent />
       </div>
     </div>
   )
 }
-
-export default Settings

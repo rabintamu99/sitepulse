@@ -41,7 +41,7 @@ export default function Hero() {
           </svg> */}
         </a>
       </div>
-      <BackgroundBeams className="z-[0]" />
+      <BackgroundBeams className="z-[-2]" />
       {/* <div className="p-4 border border-neutral-200 bg-neutral-100 dark:bg-neutral-800 dark:border-neutral-700 rounded-[32px] mt-20 relative"><div className="absolute inset-x-0 bottom-0 h-40 w-full bg-gradient-to-b from-transparent via-white to-white dark:via-black/50 dark:to-black scale-[1.1] pointer-events-none"></div><div className="p-2 bg-white dark:bg-black dark:border-neutral-700 border border-neutral-200 rounded-[24px]">
           <img alt="header" loading="lazy" width="1920" height="1080" decoding="async" data-nimg="1" className="rounded-[20px]" srcset="/_next/image?url=%2Fheader.png&amp;w=1920&amp;q=75 1x, /_next/image?url=%2Fheader.png&amp;w=3840&amp;q=75 2x" src="/_next/image?url=%2Fheader.png&amp;w=3840&amp;q=75" style={{ color: 'transparent' }} />
         </div></div> */}

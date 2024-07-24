@@ -12,82 +12,88 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
+ 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String
-  name      String?
-  role      Role      @default(USER)
-  websites  Website[]
-  alerts    Alert[]
-  reports   Report[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  websites      Website[]
+  // Optional for WebAuthn support
+  Authenticator Authenticator[]
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([provider, providerAccountId])
+}
+ 
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@id([identifier, token])
+}
+ 
+// Optional for WebAuthn support
+model Authenticator {
+  credentialID         String  @unique
+  userId               String
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@id([userId, credentialID])
 }
 
 model Website {
-  id          Int       @id @default(autoincrement())
-  name        String
-  url         String    @unique
-  ownerId     Int
-  owner       User      @relation(fields: [ownerId], references: [id])
-  status      String
-  ttfb        Float?
-  sslInfo     Json?
-  error       String?
-  metrics     Metric[]
-  reports     Report[]
-  alerts      Alert[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-}
-
-model Metric {
-  id          Int       @id @default(autoincrement())
-  websiteId   Int
-  website     Website   @relation(fields: [websiteId], references: [id])
-  responseTime Float
-  uptime      Float
-  errorRate   Float
-  recordedAt  DateTime  @default(now())
-}
-
-model Alert {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id])
-  websiteId   Int
-  website     Website   @relation(fields: [websiteId], references: [id])
-  type        AlertType
-  message     String
-  createdAt   DateTime  @default(now())
-}
-
-model Report {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  user        User      @relation(fields: [userId], references: [id])
-  websiteId   Int
-  website     Website   @relation(fields: [websiteId], references: [id])
-  reportType  ReportType
-  content     String
-  generatedAt DateTime  @default(now())
-}
-
-enum Role {
-  ADMIN
-  USER
-}
-
-enum AlertType {
-  DOWNTIME
-  PERFORMANCE
-  ERROR
-}
-
-enum ReportType {
-  DAILY
-  WEEKLY
-  MONTHLY
+  id           Int      @id @default(autoincrement())
+  url          String   @unique
+  status       Int
+  responseTime Int
+  ttfb         Float?
+  sslInfo      Json?
+  error        String?  // Optional field to store error messages
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

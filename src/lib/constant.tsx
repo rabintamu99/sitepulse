@@ -1,4 +1,4 @@
-import { Home, Settings, CreditCard, AudioLines } from 'lucide-react'
+import { Home, Settings, CreditCard, AudioLines, ActivityIcon } from 'lucide-react'
 
 export const clients = [...new Array(10)].map((client, index) => ({
   href: `/${index + 1}.png`,
@@ -87,6 +87,7 @@ export const products = [
 
 export const menuOptions = [
   { name: 'Dashboard', Component: Home, href: '/dashboard' },
+  { name: 'Monitors', Component: ActivityIcon, href: '/monitors' },
   { name: 'Connections', Component: AudioLines, href: '/connections' },
   { name: 'Settings', Component: Settings, href: '/settings' },
   { name: 'Billing', Component: CreditCard, href: '/billing' },

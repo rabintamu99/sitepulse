@@ -81,6 +81,14 @@ const config = {
           },
           "50%": {
             transform: "translate(-50%, -50%) scale(0.9)",
+          }, 
+        },
+        shimmer: {
+          "0%, 90%, 100%": {
+            "background-position": "calc(-100% - var(--shimmer-width)) 0",
+          },
+          "30%, 60%": {
+            "background-position": "calc(100% + var(--shimmer-width)) 0",
           },
         },
       },
@@ -89,6 +97,7 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         scroll: "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
         ripple: "ripple var(--duration,2s) ease calc(var(--i, 0)*.2s) infinite",
+        shimmer: "shimmer 8s infinite",
       },
     },
   },

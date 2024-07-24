@@ -2,34 +2,38 @@
 
 import { ActivityIcon } from "lucide-react";
 import Ripple from "../magicui/ripple";
+import NumberTicker from "../magicui/number-ticker";
+import { BiSolidLockAlt } from "react-icons/bi";
 
 interface MonitoringCardProps {
     siteName: string;
-    status: string;
-    uptime: string;
-    checkInterval: string;
+    status: number;
+    uptime: number;
+    checkInterval: number;
     responseTime: number;
   }
 
-const MonitoringCard = ({ siteName, status, uptime, checkInterval, responseTime }: MonitoringCardProps) => {
+const MonitoringCard = ({ siteName, status, uptime, responseTime }: MonitoringCardProps) => {
     return (
-      <div className="flex flex-col justify-center border border-gray-700 p-4 gap-2 mb-2 rounded-lg shadow-sm w-[1000px] relative">
+      <div className={`flex flex-col justify-center border ${status === 200 ? 'border-gray-700' : 'border-red-400'} p-4 gap-2 mb-2 rounded-lg shadow-sm w-[1200px] relative`}>
         <div className="flex justify-between items-center">
           <div className="flex flex-row items-center">
             <div className="flex relative">
-              <span className="w-3 h-3 bg-green-500 rounded-full"></span> {/* Static dot */}
-              <span className="w-3 h-3 animate-ping bg-green-500 rounded-full absolute top-0 left-0"></span> {/* Heartbeat */}
+              <span className={`w-3 h-3 ${status === 200 ? "bg-green-500" : "bg-red-500"} rounded-full`}></span> {/* Static dot */}
+              <span className={`w-3 h-3 animate-ping ${status === 200 ? "bg-green-500" : "bg-red-500"} rounded-full absolute top-0 left-0`}></span> {/* Heartbeat */}
             </div>
             <div className="flex flex-col ml-5">
-              <h5 className="font-medium">{siteName}</h5>
+              <h5 className="font-medium flex items-center gap-2"><BiSolidLockAlt className="w-4 h-4 text-green-500" />{siteName}</h5>
               <p className="text-sm text-gray-500">
-                <span className="text-green-500">{status}</span> · {uptime}
+                <span className={status === 200 ? "text-green-500" : "text-red-500"}>
+                  {status === 200 ? "Site is Up" : "Site is Down"}
+                </span> 
               </p>
             </div>
           </div>
           <div className="flex items-center justify-center gap-3">
             <ActivityIcon className="w-3 h-3 animate-pulse text-gray-500" />
-            <p className="text-sm text-gray-500 animate-pulse">{responseTime}</p>
+            <p className="text-sm text-gray-500 animate-pulse"> <NumberTicker value={responseTime}/>ms</p>
             <button className="text-gray-500 hover:text-gray-700 ml-5">
               <svg
                 className="w-5 h-5"

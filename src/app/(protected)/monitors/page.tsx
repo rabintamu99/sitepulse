@@ -2,25 +2,38 @@
 
 import { Button } from "@/components/ui/button";
 import MonitoringCard from "@/components/ui/monitoring-card";
-import { ActivityIcon } from "lucide-react";
-import React, { useState } from "react";
+import { ActivityIcon, Loader2Icon } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogClose, DialogFooter } from "@/components/ui/dialog"; // Assuming you have a Modal component
+import { useSession } from "next-auth/react"
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { getFetchedWebsites } from "@/app/actions";
 
-export default function Dashboard(props) {
-  const [websites, setWebsites] = useState([
-    { siteName: "Facebook.com", status: "Up", uptime: "99.9%", checkInterval: "5 minutes", responseTime: 20 }
-  ]);
+export default function Dashboard() {
+  const [websites, setWebsites] = useState<any[]>([]); 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newWebsite, setNewWebsite] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { data: session } = useSession();
+  
+  useEffect(() => {
+    const fetchWebsites = async () => {
+      const fetchedWebsites = await getFetchedWebsites();
+      console.log("fetchedWebsites", fetchedWebsites);
+      setWebsites(fetchedWebsites ?? []);
+    };
+    fetchWebsites();
+  }, [session]);
 
   const addWebsiteToMonitor = async () => {
     try {
-      const response = await axios.get('/api/monitor?url=' + newWebsite);
+      const response = await axios.get('/api/monitor?url=' + newWebsite + '&userId=' + session?.user?.id);
       const addedWebsite = response.data;
-      console.log(addedWebsite);
-      console.log(addedWebsite.responseTime);
-      console.log(addedWebsite.siteName);
       setWebsites([...websites, addedWebsite]);
       setIsModalOpen(false);
       setNewWebsite("");
@@ -29,11 +42,10 @@ export default function Dashboard(props) {
     }
   };
 
-  console.log(websites);
   return (
-    <div className="flex flex-col gap-2 max-w-[1000px] mx-auto mt-5">
+    <div className="flex flex-col gap-2 max-w-[1200px] mx-auto">
       <h1 className="sticky top-0 z-[10] flex items-start justify-start bg-background/50 text-2xl backdrop-blur-lg">
-        <span>Welcome to SitePulse , Rabin👋🏻</span>
+        <span>Welcome to SitePulse, {session?.user?.name ?? "Guest"} 👋🏻</span>
       </h1>
       <span>we are working 24/7 to monitor your website</span>
       <div className="flex flex-col items-end self-end gap-2">
@@ -43,17 +55,30 @@ export default function Dashboard(props) {
         </Button>
       </div>
       <div className="flex flex-col items-center mt-5">
-        {websites.map((website, index) => (
-          <MonitoringCard 
-            key={index}
-            siteName={website.siteName}
-            status={website.status} 
-            uptime={website.uptime} 
-            checkInterval={website.checkInterval} 
-            responseTime={website.responseTime}
-          />
-        ))}
+        {websites.length === 0 ? (
+             <>
+             <h2 className="text-muted-foreground">No websites to monitor.</h2>
+             <span className="text-muted-foreground">Add a website to get started.</span>
+           </>
+        ) : (
+          websites.slice(0, 4).map((website, index) => (
+            <MonitoringCard 
+              key={index}
+              siteName={website.url}
+              status={website.status} 
+              uptime={website.status} 
+              checkInterval={website.status} 
+              responseTime={website.responseTime}
+            />
+          ))
+        )}
       </div>
+      {websites.length > 0 && (
+        <div className="flex flex-col">
+          <span className="text-muted-foreground">See all your websites →</span>
+        </div>
+      )}
+
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent>
           <DialogHeader>
@@ -68,7 +93,7 @@ export default function Dashboard(props) {
               className="border border-gray-700 bg-background/50 rounded-lg p-2 w-full mb-4 focus:outline-none"
             />
             <Button className="px-4 rounded-full" onClick={addWebsiteToMonitor}>
-              Add Website
+              {isLoading ? <Loader2Icon className="w-4 h-4 mr-2" /> : "Add Website"}
             </Button>
           </div>
         </DialogContent>
