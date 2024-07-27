@@ -16,7 +16,6 @@ const Layout = (props: Props) => {
         {props.children}
         {/* <Dock /> */}
       </div>
-      
     </div>
   )
 }

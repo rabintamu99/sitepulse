@@ -5,12 +5,11 @@ import { auth } from "@/auth";
 
 export async function getFetchedWebsites() {
   const session = await auth();
-  console.log("session", session);
   const fetchedWebsites = await prisma.website.findMany({
     where: {
       userId: session?.user?.id,
     },
-    });
+  });
     // console.log("fetchedWebsites", fetchedWebsites);
     return fetchedWebsites;
 }

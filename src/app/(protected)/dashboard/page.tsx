@@ -6,7 +6,6 @@ import { ActivityIcon, Loader2Icon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react"
-import { prisma } from '@/lib/prisma'
 import { 
   Dialog,
   DialogContent,
@@ -14,6 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getFetchedWebsites } from "@/app/actions";
+import Link from "next/link";
 
 export default function Dashboard() {
   const [websites, setWebsites] = useState<any[]>([]); 
@@ -22,12 +22,6 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: session } = useSession();
-
-  // const fetchedWebsites = await prisma.website.findMany({
-  //   where: {
-  //       userId: session?.user?.id,
-  //     },
-  //   });
   
   useEffect(() => {
     const fetchWebsites = async () => {
@@ -37,27 +31,6 @@ export default function Dashboard() {
     };
     fetchWebsites();
   }, [session]);
-
-  // const getFetchedWebsites = async () => {
-  //   try {
-  //     const fetchedWebsites = await prisma.website.findMany({
-  //   where: {
-  //       userId: session?.user?.id,
-  //       },
-  //     });
-  //     return fetchedWebsites;
-  //   } catch (error) {
-  //     console.error("Error fetching websites:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchWebsites = async () => {
-  //     const fetchedWebsites = await getFetchedWebsites();
-  //     setWebsites(fetchedWebsites ?? []);
-  //   };
-  //   fetchWebsites();
-  // }, [session]);
 
   const addWebsiteToMonitor = async () => {
     try {
@@ -72,7 +45,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col gap-2 max-w-[1200px] mx-auto">
+    <div className="flex flex-col gap-2 max-w-[1100px] mx-auto">
       <h1 className="sticky top-0 z-[10] flex items-start justify-start bg-background/50 text-2xl backdrop-blur-lg">
         <span>Welcome to SitePulse, {session?.user?.name ?? "Guest"} 👋🏻</span>
       </h1>
@@ -90,21 +63,22 @@ export default function Dashboard() {
              <span className="text-muted-foreground">Add a website to get started.</span>
            </>
         ) : (
-          websites.slice(0, 4).map((website, index) => (
+          websites.slice(0, 3).map((website, index) => (
+            <Link href={`/monitors/view?id=${website.id}`} key={index}>
             <MonitoringCard 
-              key={index}
               siteName={website.url}
               status={website.status} 
-              uptime={website.status} 
-              checkInterval={website.status} 
+              uptime={website.uptime} 
               responseTime={website.responseTime}
+              updatedAt={website.updatedAt}
             />
+          </Link>
           ))
         )}
       </div>
       {websites.length > 0 && (
         <div className="flex flex-col">
-          <span className="text-muted-foreground">See all your websites →</span>
+          <Link href="/monitors" className="text-muted-foreground">See all your websites →</Link>
         </div>
       )}
 

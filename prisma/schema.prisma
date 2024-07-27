@@ -19,6 +19,9 @@ model User {
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  plan       Plan    @default(free)
+  customerId String? @unique 
+  subscription Subscription?
   accounts      Account[]
   sessions      Session[]
   websites      Website[]
@@ -27,6 +30,31 @@ model User {
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Plan {
+  free
+  premium
+}
+
+enum SubscriptionPeriod {
+  monthly
+  yearly
+}
+
+model Subscription {
+  id     String             @id @default(cuid()) @map("_id")
+  userId String             @unique
+  plan   Plan
+  period SubscriptionPeriod
+
+  startDate DateTime @default(now())
+  endDate   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User User @relation(fields: [userId], references: [id])
 }
  
 model Account {
@@ -87,13 +115,25 @@ model Authenticator {
 model Website {
   id           Int      @id @default(autoincrement())
   url          String   @unique
-  status       Int
+  status       Int 
   responseTime Int
+  uptime       Int
   ttfb         Float?
   sslInfo      Json?
-  error        String?  // Optional field to store error messages
+  error        String?  
   userId       String
+  metrics      Metric[]
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model Metric {
+  id Int @id @default(autoincrement())
+  websiteId Int
+  status Int 
+  responseTime Int
+  website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -137,3 +137,5 @@ export const EditorCanvasDefaultCardTypes = {
     type: 'Action',
   },
 }
+
+export const PaymentLink = 'https://buy.stripe.com/test_fZe3cicqmfpv1zObIJ'

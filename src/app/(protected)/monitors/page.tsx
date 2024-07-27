@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import MonitoringCard from "@/components/ui/monitoring-card";
+import MonitoringCard from "@/components/monitor/ListMonitor";
 import { ActivityIcon, Loader2Icon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -43,7 +43,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col gap-2 max-w-[1200px] mx-auto">
+    <div className="flex flex-col gap-2 max-w-[1000px] mx-auto">
       <h1 className="sticky top-0 z-[10] flex items-start justify-start bg-background/50 text-2xl backdrop-blur-lg">
         <span>Welcome to SitePulse, {session?.user?.name ?? "Guest"} 👋🏻</span>
       </h1>
@@ -54,14 +54,14 @@ export default function Dashboard() {
           <span>Monitor Website</span>
         </Button>
       </div>
-      <div className="flex flex-col items-center mt-5">
+      <div className="flex flex-col items-center overflow-y-auto mt-5">
         {websites.length === 0 ? (
              <>
              <h2 className="text-muted-foreground">No websites to monitor.</h2>
              <span className="text-muted-foreground">Add a website to get started.</span>
            </>
         ) : (
-          websites.slice(0, 4).map((website, index) => (
+          websites.map((website, index) => (
             <MonitoringCard 
               key={index}
               siteName={website.url}
@@ -73,11 +73,7 @@ export default function Dashboard() {
           ))
         )}
       </div>
-      {websites.length > 0 && (
-        <div className="flex flex-col">
-          <span className="text-muted-foreground">See all your websites →</span>
-        </div>
-      )}
+
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent>
