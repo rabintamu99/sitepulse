@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 const billingLinks = [
   { name: "Plan Detail", href: "/billing" },
   { name: "Subscriptions", href: "/billing/subscriptions" },
-  { name: "Billing Details", href: "/billing/billing-details" },
-  { name: "Current Usage", href: "/billing/current-usage" },
+//   { name: "Billing Details", href: "/billing/billing-details" },
+//   { name: "Current Usage", href: "/billing/current-usage" },
 ];
 
 interface ExamplesNavProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -12,7 +12,7 @@ import { menuOptions } from '@/lib/constant'
 import clsx from 'clsx'
 import { Separator } from '@/components/ui/separator'
 import { ActivityIcon, Book, CircleAlert, CircleCheck, CircleHelpIcon, Database, GitBranch, Headphones, LucideMousePointerClick } from 'lucide-react'
-import { ModeToggle } from '../ui/mode-toogle'
+import { ThemeSwitcher } from '@/components/mode-toggle'
 import { ActivityLogIcon } from '@radix-ui/react-icons'
 
 type Props = {}
@@ -114,7 +114,7 @@ const MenuOptions = (props: Props) => {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-        <ModeToggle />
+        <ThemeSwitcher />
       </div>
     </nav>
   )

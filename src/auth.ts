@@ -11,6 +11,7 @@ interface User {
     name: string;
     image: string;
     plan: string;
+    phone?: string;
   }
 
 const prisma = new PrismaClient()
@@ -62,6 +63,7 @@ export const {
               name: token.user.name,
               image: token.user.image,
               plan: token.user.plan,
+              phone: token.user.phone,
             };
             session.user = user;
           }

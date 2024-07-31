@@ -13,6 +13,9 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { getFetchedWebsites } from "@/app/actions";
+import ListMonitor from "@/components/monitor/ListMonitor";
+import { DataTable } from "@/components/data-table/data-table";
+import { columns } from "@/components/data-table/columns";
 
 export default function Dashboard() {
   const [websites, setWebsites] = useState<any[]>([]); 
@@ -43,36 +46,33 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col gap-2 max-w-[1000px] mx-auto">
-      <h1 className="sticky top-0 z-[10] flex items-start justify-start bg-background/50 text-2xl backdrop-blur-lg">
-        <span>Welcome to SitePulse, {session?.user?.name ?? "Guest"} 👋🏻</span>
+    <div className="flex flex-col gap-2 max-w-[1200px] mx-auto">
+      <h1 className="sticky top-0 z-[10] flex items-start justify-start bg-background/50 text-3xl font-bold backdrop-blur-lg">
+        <span>Monitors.</span>
       </h1>
-      <span>we are working 24/7 to monitor your website</span>
       <div className="flex flex-col items-end self-end gap-2">
         <Button className="px-4 rounded-full" onClick={() => setIsModalOpen(true)}>
           <ActivityIcon className="w-4 h-4 mr-2" />
-          <span>Monitor Website</span>
+          <span>Add Website</span>
         </Button>
       </div>
-      <div className="flex flex-col items-center overflow-y-auto mt-5">
+      {/* <div className="flex flex-col items-center overflow-y-auto mt-5">
         {websites.length === 0 ? (
              <>
              <h2 className="text-muted-foreground">No websites to monitor.</h2>
              <span className="text-muted-foreground">Add a website to get started.</span>
            </>
-        ) : (
-          websites.map((website, index) => (
-            <MonitoringCard 
-              key={index}
-              siteName={website.url}
-              status={website.status} 
-              uptime={website.status} 
-              checkInterval={website.status} 
-              responseTime={website.responseTime}
-            />
-          ))
-        )}
-      </div>
+          ) : (
+            <ListMonitor monitors={websites.map(website => ({
+              siteName: website.url,
+              status: website.status,
+              uptime: website.status,
+              checkInterval: website.status,
+              responseTime: website.responseTime
+            }))} />
+          )}
+      </div> */}
+      <DataTable data={websites} columns={columns} />
 
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

@@ -9,8 +9,8 @@ interface BillingLayoutProps {
 export default function SettingLayout({ children }: BillingLayoutProps) {
   const customMenuItems = [
     { name: "Profile", href: "/settings" },
-    { name: "Account", href: "/settings/about" },
-    { name: "Contact", href: "/settings/contact" },
+    { name: "Account", href: "/settings/account" },
+    { name: "Other Settings", href: "/settings/contact" },
   ];
 
   return (

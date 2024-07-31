@@ -6,9 +6,6 @@ import ViewMonitor from '@/components/monitor/ViewMonitor';
 export default async function ViewMonitorPage({params, searchParams}: any) {
 
   const monitorId = parseInt(searchParams.id, 10);
-
-  console.log("monitorId", monitorId);
-
   const monitorInfo = await prisma.website.findUnique({
     where: {
       id: monitorId,

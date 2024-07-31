@@ -1,9 +1,6 @@
 import React from 'react'
 import Sidebar from '@/components/sidebar'
 import InfoBar from '@/components/infobar'
-import Dock from '@/components/sidebar/dock'
-import { GitHubLogoIcon } from '@radix-ui/react-icons'
-import { HardDrive, PackageOpen, WheatIcon } from 'lucide-react'
 
 type Props = { children: React.ReactNode }
 

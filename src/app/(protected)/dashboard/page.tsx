@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { getFetchedWebsites } from "@/app/actions";
 import Link from "next/link";
+import DashboardComponent from "@/components/DashboardComponent";
 
 export default function Dashboard() {
   const [websites, setWebsites] = useState<any[]>([]); 
@@ -56,6 +57,7 @@ export default function Dashboard() {
           <span>Monitor Website</span>
         </Button>
       </div>
+      {/* <DashboardComponent websites={websites} /> */}
       <div className="flex flex-col items-center mt-5">
         {websites.length === 0 ? (
              <>
@@ -64,15 +66,14 @@ export default function Dashboard() {
            </>
         ) : (
           websites.slice(0, 3).map((website, index) => (
-            <Link href={`/monitors/view?id=${website.id}`} key={index}>
             <MonitoringCard 
+              id={website.id}
               siteName={website.url}
               status={website.status} 
               uptime={website.uptime} 
               responseTime={website.responseTime}
               updatedAt={website.updatedAt}
             />
-          </Link>
           ))
         )}
       </div>

@@ -18,14 +18,14 @@ model User {
   name          String?
   email         String          @unique
   emailVerified DateTime?
+  phone         String?
   image         String?
-  plan       Plan    @default(free)
-  customerId String? @unique 
-  subscription Subscription?
+  plan          Plan            @default(free)
+  customerId    String?         @unique 
+  subscription  Subscription?
   accounts      Account[]
   sessions      Session[]
   websites      Website[]
-  // Optional for WebAuthn support
   Authenticator Authenticator[]
  
   createdAt DateTime @default(now())

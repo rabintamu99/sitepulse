@@ -40,7 +40,7 @@ const InfoBar = (props: Props) => {
 const { data: session } = useSession()
 
   return (
-    <div className="flex flex-row justify-end gap-6 items-center px-8 py-4 dark:bg-black ">
+    <div className="flex flex-row justify-end gap-6 items-center px-8 py-4 ">
       <span className="flex items-center gap-2 font-bold">
         <p className="text-sm font-light"></p>
       </span>

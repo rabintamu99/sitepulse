@@ -6,8 +6,10 @@ import NumberTicker from "../magicui/number-ticker";
 import { BiSolidLockAlt } from "react-icons/bi";
 import { useState } from "react";
 import { formatDistanceToNow } from 'date-fns';
+import Link from "next/link";
 
 interface MonitoringCardProps {
+    id: string;
     siteName: string;
     status: number;
     uptime: number;
@@ -15,7 +17,7 @@ interface MonitoringCardProps {
     updatedAt: string;
   }
 
-const MonitoringCard = ({ siteName, status, uptime, responseTime, updatedAt }: MonitoringCardProps) => {
+const MonitoringCard = ({ id,siteName, status, uptime, responseTime, updatedAt }: MonitoringCardProps) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const formattedUpdatedAt = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
 
@@ -32,7 +34,11 @@ const MonitoringCard = ({ siteName, status, uptime, responseTime, updatedAt }: M
               <span className={`w-3 h-3 animate-ping ${status === 200 ? "bg-green-500" : "bg-red-500"} rounded-full absolute top-0 left-0`}></span> {/* Heartbeat */}
             </div>
             <div className="flex flex-col ml-5">
-              <h5 className="font-medium flex items-center gap-2"><BiSolidLockAlt className="w-4 h-4 text-green-500" />{siteName}</h5>
+            <Link href={`/monitors/view?id=${id}`}>
+              <h5 className="font-medium flex items-center gap-2"><BiSolidLockAlt className="w-4 h-4 text-green-5000" />
+                {siteName}
+              </h5>
+              </Link>
               <p className="text-sm text-gray-500">
                 <span className={status === 200 ? "text-green-500" : "text-red-500"}>
                   {status === 200 ? "Site is Up" : "Site is Down"}
