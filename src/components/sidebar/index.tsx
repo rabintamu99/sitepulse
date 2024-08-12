@@ -11,8 +11,9 @@ import {
 import { menuOptions } from '@/lib/constant'
 import clsx from 'clsx'
 import { Separator } from '@/components/ui/separator'
-import { Database, GitBranch, LucideMousePointerClick } from 'lucide-react'
-import { ModeToggle } from '../ui/mode-toogle'
+import { ActivityIcon, Book, CircleAlert, CircleCheck, CircleHelpIcon, Database, GitBranch, Headphones, LucideMousePointerClick } from 'lucide-react'
+import { ThemeSwitcher } from '@/components/mode-toggle'
+import { ActivityLogIcon } from '@radix-ui/react-icons'
 
 type Props = {}
 
@@ -20,13 +21,15 @@ const MenuOptions = (props: Props) => {
   const pathName = usePathname()
 
   return (
-    <nav className=" dark:bg-black h-screen overflow-scroll  justify-between flex items-center flex-col  gap-10 py-6 px-2">
+    <>
+    <div className=" dark:bg-black h-screen overflow-scroll  justify-between flex items-center flex-col py-4 gap-10 px-4">
       <div className="flex items-center justify-center flex-col gap-8">
         <Link
-          className="flex font-bold flex-row "
+          className="flex font-bold flex-row items-center "
           href="/"
         >
-          SitePulse.
+        <span>Site</span>
+        <ActivityIcon className="w-4 h-4" />
         </Link>
         <TooltipProvider>
           {menuOptions.map((menuItem) => (
@@ -37,15 +40,18 @@ const MenuOptions = (props: Props) => {
                     <Link
                       href={menuItem.href}
                       className={clsx(
-                        'group h-10 w-10 flex items-center justify-center  scale-[1] rounded-full cursor-pointer',
+                        'group h-8 w-8 flex items-center justify-center  scale-[1] rounded-full cursor-pointer',
                         {
-                          'dark:bg-[#6a6a6a] bg-[#f1f0f0] ':
+                          'dark:bg-neutral-700 bg-[#f1f0f0] ':
                             pathName === menuItem.href,
                         }
                       )}
                     >
                       <menuItem.Component
-                        selected={pathName === menuItem.href}
+                        className={clsx('w-5 h-5', {
+                          'text-primary': pathName === menuItem.href,
+                          'text-muted-foreground': pathName !== menuItem.href
+                        })}
                       />
                     </Link>
                   </li>
@@ -60,41 +66,32 @@ const MenuOptions = (props: Props) => {
             </ul>
           ))}
         </TooltipProvider>
-        {/* <Separator /> */}
-        {/* <div className="flex items-center flex-col gap-9 dark:bg-[#353346]/30 py-4 px-2 rounded-full h-56 overflow-scroll border-[1px]">
-          <div className="relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]">
-            <LucideMousePointerClick
-              className="dark:text-white"
-              size={18}
-            />
-            <div className="border-l-2 border-muted-foreground/50 h-6 absolute left-1/2 transform translate-x-[-50%] -bottom-[30px]" />
-          </div>
-          <div className="relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]">
-            <GitBranch
-              className="text-muted-foreground"
-              size={18}
-            />
-            <div className="border-l-2 border-muted-foreground/50 h-6 absolute left-1/2 transform translate-x-[-50%] -bottom-[30px]"></div>
-          </div>
-          <div className="relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]">
-            <Database
-              className="text-muted-foreground"
-              size={18}
-            />
-            <div className="border-l-2 border-muted-foreground/50 h-6 absolute left-1/2 transform translate-x-[-50%] -bottom-[30px]"></div>
-          </div>
-          <div className="relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]">
-            <GitBranch
-              className="text-muted-foreground"
-              size={18}
-            />
-          </div>
-        </div> */}
       </div>
       <div className="flex items-center justify-center flex-col gap-8">
-        <ModeToggle />
+      <TooltipProvider>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger>
+            <Headphones className='text-muted-foreground' />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Contact Support</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip delayDuration={0}>
+          <TooltipTrigger>
+            <CircleHelpIcon className='text-muted-foreground' />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Help</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+        <ThemeSwitcher />
       </div>
-    </nav>
+    </div>
+    </>
   )
 }
 

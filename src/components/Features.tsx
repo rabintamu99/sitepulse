@@ -29,7 +29,7 @@ export default function Features() {
           </p>
         </div>
         <Image
-          src="/linear.webp"
+          src="/public/linear.webp"
           width={500}
           height={500}
           alt="linear demo image"
@@ -54,7 +54,7 @@ export default function Features() {
           </p>
         </div>
         <Image
-          src="/linear.webp"
+          src="/public/linear.webp"
           width={500}
           height={500}
           alt="linear demo image"
