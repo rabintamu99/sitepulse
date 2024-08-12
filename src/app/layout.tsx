@@ -20,8 +20,8 @@ export default async function RootLayout({
 }>) {
   const session = await auth()
   return (
-    <html lang="en">
-      <body className={`${dm_sans.className} h-screen`}>
+    <html lang="en" >
+      <body className={`${dm_sans.className} h-screen`} suppressHydrationWarning>
       <ThemeProvider
             attribute="class"
             defaultTheme="dark"

@@ -9,7 +9,7 @@ type Props = {}
 export default function Connections() {
 
   return (
-    <div className="flex flex-col gap-2 max-w-[1200px] mx-auto">
+    <div className="flex flex-col gap-2 max-w-[1100px] mx-auto">
       <div className="flex flex-col gap-10 mt-5">
         <div>
           <h2 className="text-2xl font-bold">Integration with Third-Party Services</h2>

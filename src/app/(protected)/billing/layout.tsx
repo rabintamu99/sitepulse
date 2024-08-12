@@ -8,7 +8,7 @@ interface BillingLayoutProps {
 
 export default function BillingLayout({ children }: BillingLayoutProps) {
   return (
-    <div className="flex flex-col gap-2 max-w-[1200px] mx-auto">
+    <div className="flex flex-col gap-2 max-w-[1100px] mx-auto">
       <div className="flex flex-col mt-5">
         <div>
           <h2 className="text-2xl font-bold">Current Plan</h2>

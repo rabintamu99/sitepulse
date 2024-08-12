@@ -27,7 +27,7 @@ export function DataTableToolbar<TData>({
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-10 w-[150px] lg:w-[250px] rounded-lg"
         />
         {table.getColumn("status") && (
           <DataTableFacetedFilter
@@ -36,13 +36,13 @@ export function DataTableToolbar<TData>({
             options={status_options}
           />
         )}
-        {table.getColumn("priority") && (
+        {/* {table.getColumn("priority") && (
           <DataTableFacetedFilter
             column={table.getColumn("priority")}
             title="Priority"
             options={priority_options}
           />
-        )}
+        )} */}
         {isFiltered && (
           <Button
             variant="ghost"

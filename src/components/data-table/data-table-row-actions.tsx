@@ -25,6 +25,8 @@ import EditDialog from "@/components/modals/edit-modal";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import DeleteDialog from "@/components/modals/delete-modal";
 import { useRouter } from "next/navigation"; 
+import { deleteMonitor } from "@/app/actions/index";
+import toast from "react-hot-toast";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -37,15 +39,27 @@ export function DataTableRowActions<TData>({
     React.useState<React.ReactNode | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] =
     React.useState<boolean>(false);
-  const websites = websitesSchema.parse(row.original);
+  const websites = row.original as any;
   const router = useRouter(); 
 
   const handleEditClick = () => {
-    setDialogContent(<EditDialog websites={websites} />);
+    setDialogContent(<EditDialog websites={websites as any} />);
   };
 
   const handleViewClick = () => {
     router.push(`/monitors/view?id=${websites.id}`);
+  };
+
+  const handleDeleteClick = async () => {
+    try {
+      await deleteMonitor(websites.id.toString());
+      toast.success("Monitor deleted successfully");
+      setShowDeleteDialog(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Failed to delete monitor:", error);
+      toast.error("Failed to delete monitor");
+    }
   };
 
   return (
@@ -108,6 +122,7 @@ export function DataTableRowActions<TData>({
         websites={websites}
         isOpen={showDeleteDialog}
         showActionToggle={setShowDeleteDialog}
+        onConfirm={handleDeleteClick}
       />
     </Dialog>
   );

@@ -18,12 +18,14 @@ import {
     websites: WebsiteType;
     isOpen: boolean;
     showActionToggle: (open: boolean) => void;
+    onConfirm: () => void;
   };
   
   export default function DeleteDialog({
     websites,
     isOpen,
     showActionToggle,
+    onConfirm,
   }: DeleteProps) {
     return (
       <AlertDialog open={isOpen} onOpenChange={showActionToggle}>
@@ -41,6 +43,7 @@ import {
               variant='destructive'
               onClick={() => {
                 showActionToggle(false);
+                onConfirm();
               }}
             >
               Delete

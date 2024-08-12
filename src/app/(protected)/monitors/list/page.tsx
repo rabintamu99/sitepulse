@@ -31,7 +31,7 @@ export default async function TaskPage() {
   return (
     <Shell>
       <div className='flex h-full min-h-screen w-full flex-col'>
-        <DataTable data={tasks} columns={columns} />
+        <DataTable data={tasks} columns={columns} isLoading={false} />
       </div>
     </Shell>
   );

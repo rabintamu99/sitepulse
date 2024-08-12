@@ -6,8 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
-import { WebsiteType } from "@/lib/validations/schema"; // Assuming WebsiteType is defined in your schema
-import { label_options, priority_options, status_options } from "../filters";
+import { WebsiteType } from "@/lib/validations/schema";
+import { status_options } from "../filters";
 import { formatDistanceToNow } from "date-fns";
 
 export const columns: ColumnDef<WebsiteType>[] = [
@@ -64,8 +64,8 @@ export const columns: ColumnDef<WebsiteType>[] = [
       return (
         <div className='flex w-[100px] items-center relative'>
           <div className="flex relative">
-              <span className={`w-3 h-3 ${status.value === 200 ? "bg-green-500" : "bg-red-500"} rounded-full`}></span> {/* Static dot */}
-              <span className={`w-3 h-3 animate-ping ${status.value === 200 ? "bg-green-500" : "bg-red-500"} rounded-full absolute top-0 left-0`}></span> {/* Heartbeat */}
+              <span className={`w-3 h-3 ${status.value === 200 ? "bg-green-500" : "bg-red-500"} rounded-full`}></span>
+              <span className={`w-3 h-3 animate-ping ${status.value === 200 ? "bg-green-500" : "bg-red-500"} rounded-full absolute top-0 left-0`}></span>
             </div>
           <span className="ml-2">{status.label}</span>
         </div>
@@ -95,9 +95,17 @@ export const columns: ColumnDef<WebsiteType>[] = [
       <DataTableColumnHeader column={column} title='Last Checked' />
     ),
     cell: ({ row }) => {
-      const field = new Date(row.getValue("updatedAt"));
-      const formattedUpdatedAt = formatDistanceToNow(field, { addSuffix: true });
-      return (<div>{formattedUpdatedAt}</div>);
+      try {
+        const field = new Date(row.getValue("updatedAt"));
+        if (isNaN(field.getTime())) {
+          throw new Error("Invalid date");
+        }
+        const formattedUpdatedAt = formatDistanceToNow(field, { addSuffix: true });
+        return (<div>{formattedUpdatedAt}</div>);
+      } catch (error) {
+        console.error("Error formatting date:", error);
+        return <div>Invalid date</div>;
+      }
     },
   },
   {

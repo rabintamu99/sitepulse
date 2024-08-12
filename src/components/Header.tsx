@@ -16,7 +16,7 @@ export default function Header() {
         
         <div className="flex space-x-4">
           <Link href="/api/auth/signin" className="rounded-full px-2 py-1 mt-1">Signin</Link>
-          <Link href="/api/auth/signin">
+          <Link href="/api/auth/signup">
             <HoverBorderGradient className="text-sm text-white">Sign Up</HoverBorderGradient>
           </Link>
         </div>

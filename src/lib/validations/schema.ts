@@ -1,6 +1,9 @@
 import { z } from "zod";
 
-// Define metricSchema
+export const statuses = ["active", "inactive"];
+export const labels = ["bug", "feature", "task"];
+export const priorities = ["low", "medium", "high"];
+
 const metricSchema = z.object({
   id: z.number(),
   websiteId: z.number(),

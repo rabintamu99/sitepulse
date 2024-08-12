@@ -25,15 +25,9 @@ export const {
     adapter: PrismaAdapter(prisma),
     ...authConfig,
     providers: [
-        Resend({
-            from: "Acme <onboarding@resend.dev>",
-            sendVerificationRequest: async ({ identifier, url, provider }) => {
-                await fetch("/api/send", {
-                    method: "POST",
-                    body: JSON.stringify({ email: identifier }),
-                });
-            },
-        }),
+      Resend({
+        from: process.env.RESEND_FROM,
+      }),
         GoogleProvider({
             clientId: process.env.AUTH_GOOGLE_ID,
             clientSecret: process.env.AUTH_GOOGLE_SECRET,

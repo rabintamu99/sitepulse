@@ -46,20 +46,4 @@ export const label_options = [
   },
 ];
 
-export const priority_options = [
-  {
-    value: "low",
-    label: "Low",
-    icon: ArrowDown,
-  },
-  {
-    value: "medium",
-    label: "Medium",
-    icon: ArrowRight,
-  },
-  {
-    value: "high",
-    label: "High",
-    icon: ArrowUp,
-  },
-];
+

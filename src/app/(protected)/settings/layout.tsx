@@ -14,8 +14,8 @@ export default function SettingLayout({ children }: BillingLayoutProps) {
   ];
 
   return (
-    <div className="flex flex-col gap-2 max-w-[1200px] mx-auto">
-      <div className="flex flex-col mt-5">
+    <div className="flex flex-col gap-2 w-full mx-10">
+      <div className="flex flex-col">
         <div>
           <h2 className="text-2xl font-bold">Settings</h2>
           <p className="text-base">

@@ -86,7 +86,6 @@ export const products = [
 ]
 
 export const menuOptions = [
-  { name: 'Dashboard', Component: Home, href: '/dashboard' },
   { name: 'Monitors', Component: ActivityIcon, href: '/monitors' },
   { name: 'Connections', Component: AudioLines, href: '/connections' },
   { name: 'Settings', Component: Settings, href: '/settings' },

@@ -11,7 +11,7 @@ export default  async function Billing() {
 const session = await auth()
 
   return (
-        <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8">
+        <div className="flex items-center justify-center flex-col md:flex-row gap-4 md:gap-8 p-4 md:p-8 overflow-y-auto">
         <CardContainer>
         <CardBody className={`bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-neutral-500/[0.1] dark:bg-black ${session?.user?.plan === 'free' ? 'border-[#bb92ee] ' : 'border-black/[0.1]'}  w-full md:!w-[350px] h-auto rounded-xl p-6 border`}>
             <CardItem translateZ="50" className="text-xl font-bold text-neutral-600 dark: ">
