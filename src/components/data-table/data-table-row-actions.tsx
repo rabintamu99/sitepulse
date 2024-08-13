@@ -27,6 +27,7 @@ import DeleteDialog from "@/components/modals/delete-modal";
 import { useRouter } from "next/navigation"; 
 import { deleteMonitor } from "@/app/actions/index";
 import toast from "react-hot-toast";
+import { revalidatePath } from "next/cache";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -55,10 +56,9 @@ export function DataTableRowActions<TData>({
       await deleteMonitor(websites.id.toString());
       toast.success("Monitor deleted successfully");
       setShowDeleteDialog(false);
-      router.refresh();
+      revalidatePath('/monitors'); 
     } catch (error) {
-      console.error("Failed to delete monitor:", error);
-      toast.error("Failed to delete monitor");
+      // toast.error("Failed to delete monitor");
     }
   };
 
@@ -75,7 +75,7 @@ export function DataTableRowActions<TData>({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-[200px]'>
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          {/* <DropdownMenuLabel>Actions</DropdownMenuLabel> */}
           <DropdownMenuItem
             onClick={() => navigator.clipboard.writeText(websites.url.toString())}
             className='cursor-pointer'
@@ -101,7 +101,7 @@ export function DataTableRowActions<TData>({
             <Trash2 className='mr-2 h-4 w-4' />
             Delete Monitor
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          {/* <DropdownMenuSeparator />
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className='cursor-pointer'>Coming Soon</DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
@@ -114,7 +114,7 @@ export function DataTableRowActions<TData>({
                 ))}
               </DropdownMenuRadioGroup>
             </DropdownMenuSubContent>
-          </DropdownMenuSub>
+          </DropdownMenuSub> */}
         </DropdownMenuContent>
       </DropdownMenu>
       {dialogContent && <DialogContent>{dialogContent}</DialogContent>}

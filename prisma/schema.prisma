@@ -120,6 +120,7 @@ model Website {
   uptime       Int
   ttfb         Float?
   sslInfo      Json?
+  checkInterval String? @default("5")
   error        String?  
   userId       String
   metrics      Metric[]

@@ -8,7 +8,7 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { WebsiteType } from "@/lib/validations/schema";
 import { status_options } from "../filters";
-import { formatDistanceToNow } from "date-fns";
+import { differenceInSeconds, formatDistanceToNow } from "date-fns";
 
 export const columns: ColumnDef<WebsiteType>[] = [
   {
@@ -89,6 +89,7 @@ export const columns: ColumnDef<WebsiteType>[] = [
       return value.includes(row.getValue(id));
     },
   },
+  
   {
     accessorKey: "updatedAt",
     header: ({ column }) => (
@@ -100,11 +101,19 @@ export const columns: ColumnDef<WebsiteType>[] = [
         if (isNaN(field.getTime())) {
           throw new Error("Invalid date");
         }
-        const formattedUpdatedAt = formatDistanceToNow(field, { addSuffix: true });
-        return (<div>{formattedUpdatedAt}</div>);
+        
+        const now = new Date();
+        const diffInSeconds = differenceInSeconds(now, field);
+        
+        if (diffInSeconds < 60) {
+          return <div>Just now</div>;
+        } else {
+          const formattedUpdatedAt = formatDistanceToNow(field, { addSuffix: true });
+          return <div>{formattedUpdatedAt}</div>;
+        }
       } catch (error) {
         console.error("Error formatting date:", error);
-        return <div>Invalid date</div>;
+        return <div>Checking..</div>;
       }
     },
   },

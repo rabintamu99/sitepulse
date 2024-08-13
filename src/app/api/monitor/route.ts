@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 import tls from 'tls';
-import url from 'url';
 import { PrismaClient } from '@prisma/client';
 import cron from 'node-cron';
 
@@ -9,7 +8,7 @@ const prisma = new PrismaClient();
 
 async function getSSLInfo(targetUrl: string): Promise<{ valid_from: string; valid_to: string; issuer: any; subject: any }> {
   return new Promise((resolve, reject) => {
-    const { hostname, port } = url.parse(targetUrl);
+    const { hostname, port } = new URL(targetUrl);
     const options = {
       host: hostname || "",
       port: port ? parseInt(port, 10) : 443,
@@ -37,6 +36,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const targetUrl = searchParams.get('url');
   const userId = searchParams.get('userId');
+  const checkInterval = searchParams.get('checkInterval');
 
   if (!targetUrl) {
     return NextResponse.json({ error: 'Enter the URL of the site you want to monitor' }, { status: 400 });
@@ -75,6 +75,7 @@ export async function GET(request: Request) {
         sslInfo: sslInfo,
         error: null,
         uptime: 100, // Added this line
+        checkInterval
       },
       create: {
         url: targetUrl,
@@ -83,6 +84,7 @@ export async function GET(request: Request) {
         ttfb: ttfb,
         sslInfo: sslInfo,
         userId: userId,
+        checkInterval,
         uptime: 100,
       },
     });
@@ -144,6 +146,7 @@ export async function GET(request: Request) {
   }
 }
 
+
 export async function checkWebsiteStatus() {
   console.log('Checking website status...');
 
@@ -176,7 +179,8 @@ export async function checkWebsiteStatus() {
           ttfb: ttfb,
           sslInfo: sslInfo,
           error: null,
-          uptime: 100, // Adjust as needed
+          uptime: 100, 
+          checkInterval: '',
         },
       });
 

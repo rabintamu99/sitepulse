@@ -3,6 +3,8 @@ import { z } from "zod";
 export const statuses = ["active", "inactive"];
 export const labels = ["bug", "feature", "task"];
 export const priorities = ["low", "medium", "high"];
+export const types = ["bug", "feature", "task"];
+
 
 const metricSchema = z.object({
   id: z.number(),

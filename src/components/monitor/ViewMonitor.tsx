@@ -43,7 +43,6 @@ import { useSession } from "next-auth/react"
 import { Button } from "../ui/button"
 import { ConstantColorFactor } from "three"
 
-// Extend the User type to include the plan property
 declare module "next-auth" {
   interface User {
     plan?: string;
@@ -56,7 +55,7 @@ export default function ViewMonitor({ monitorInfo }: any) {
   const sslExpiryDate = new Date(monitorInfo.sslInfo.valid_to);
     const daysLeft = Math.ceil((sslExpiryDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
   const { data: session, status } = useSession()
-  const isFreePlan = session?.user?.plan === "premium"
+  const isFreePlan = session?.user?.plan === "free"
   
   
   const getLastSevenDaysMetrics = (metrics: any[]) => {
@@ -92,27 +91,31 @@ export default function ViewMonitor({ monitorInfo }: any) {
 
   return (
     <>
-    <Link href="/monitors" className="text-muted-foreground ml-10"> ← Back to Monitors</Link>
-      <div className="chart-wrapper mx-auto flex max-w-[1200px] flex-col flex-wrap items-center justify-start gap-2 sm:flex-row sm:p-8"> 
-        <div className="flex relative">
-          <span className={`w-3 h-3 ${monitorInfo.status === 200 ? "bg-green-500" : "bg-red-500"} rounded-full`}></span> {/* Static dot */}
-          <span className={`w-3 h-3 animate-ping ${monitorInfo.status === 200 ? "bg-green-500" : "bg-red-500"} rounded-full absolute top-0 left-0`}></span> {/* Heartbeat */}
-        </div>
-        <div className="flex flex-col text-center sm:text-left ml-2">
-          <h1 className="font-medium text-2xl sm:text-3xl flex items-center gap-2">
-            {/* <BiSolidLockAlt className="w-4 h-4 text-green-500" /> */}
-            {displayUrl}
-          </h1>
-          <div className="text-xs text-muted-foreground mt-1">
-            <span className="font-medium">Wesbite URL:</span> <Link className="hover:underline" href={`${monitorInfo.url}`}>{monitorInfo.url}</Link>
-            <span className="font-medium ml-2">Last checked:</span> {formattedUpdatedAt}
+      <div className="mx-6 max-w-full">
+        <Link href="/monitors" className="text-muted-foreground hover:underline mb-4 inline-block">
+          ← Back to Monitors
+        </Link>
+        
+        <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center"> 
+          <div className="flex relative">
+            <span className={`w-3 h-3 ${monitorInfo.status === 200 ? "bg-green-500" : "bg-red-500"} rounded-full`}></span>
+            <span className={`w-3 h-3 animate-ping ${monitorInfo.status === 200 ? "bg-green-500" : "bg-red-500"} rounded-full absolute top-0 left-0`}></span>
+          </div>
+          <div className="flex flex-col ml-2">
+            <h1 className="font-medium text-2xl sm:text-3xl flex items-center gap-2">
+              {displayUrl}
+            </h1>
+            <div className="text-xs text-muted-foreground mt-1">
+              <span className="font-medium">Website URL:</span> <Link className="hover:underline" href={`${monitorInfo.url}`}>{monitorInfo.url}</Link>
+              <span className="font-medium ml-2">Last checked:</span> {formattedUpdatedAt}
+            </div>
           </div>
         </div>
       </div>
-      <div className="chart-wrapper mx-auto grid w-[1200px] grid-cols-1 sm:grid-cols-2 gap-6 sm:p-8">
-        <div className="grid w-[800px] gap-6">
+      <div className="chart-wrapper mx-auto grid w-full grid-cols-1 sm:grid-cols-2 gap-4 sm:p-5">
+        <div className="grid w-[900px] gap-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <Card className="lg:max-w-md" x-chunk="charts-01-chunk-3">
+            <Card className="lg:max-w-lg" x-chunk="charts-01-chunk-3">
               <CardHeader className="p-4 pb-0">
                 <CardTitle>Website Status</CardTitle>
                 <CardDescription>
