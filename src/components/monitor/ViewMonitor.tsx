@@ -58,36 +58,36 @@ export default function ViewMonitor({ monitorInfo }: any) {
   const isFreePlan = session?.user?.plan === "free"
   
   
-  const getLastSevenDaysMetrics = (metrics: any[]) => {
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  // const getLastSevenDaysMetrics = (metrics: any[]) => {
+  //   const sevenDaysAgo = new Date();
+  //   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    return metrics
-      .filter(metric => new Date(metric.createdAt) >= sevenDaysAgo)
-      .map(metric => ({
-        date: new Date(metric.createdAt).toISOString().split('T')[0], // Format date as YYYY-MM-DD
-        status: metric.status === 200 ? 1 : 0, // Assuming 1 for "Up" and 0 for "Down"
-      }));
-  };
+  //   return metrics
+  //     .filter(metric => new Date(metric.createdAt) >= sevenDaysAgo)
+  //     .map(metric => ({
+  //       date: new Date(metric.createdAt).toISOString().split('T')[0], // Format date as YYYY-MM-DD
+  //       status: metric.status === 200 ? 1 : 0, // Assuming 1 for "Up" and 0 for "Down"
+  //     }));
+  // };
 
-  const getLast24HoursMetrics = (metrics: any[]) => {
-    const oneDayAgo = new Date();
-    oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+  // const getLast24HoursMetrics = (metrics: any[]) => {
+  //   const oneDayAgo = new Date();
+  //   oneDayAgo.setDate(oneDayAgo.getDate() - 1);
 
-    return metrics
-      .filter(metric => new Date(metric.createdAt) >= oneDayAgo)
-      .map(metric => ({
-        date: new Date(metric.createdAt).toISOString().split('T')[0], // Format date as YYYY-MM-DD
-        status: metric.status === 200 ? 1 : 0, // Assuming 1 for "Up" and 0 for "Down"
-      }));
-  };
+  //   return metrics
+  //     .filter(metric => new Date(metric.createdAt) >= oneDayAgo)
+  //     .map(metric => ({
+  //       date: new Date(metric.createdAt).toISOString().split('T')[0], // Format date as YYYY-MM-DD
+  //       status: metric.status === 200 ? 1 : 0, // Assuming 1 for "Up" and 0 for "Down"
+  //     }));
+  // };
 
-  const metricsData = getLastSevenDaysMetrics(monitorInfo.metrics);
-  const last24HoursData = getLast24HoursMetrics(monitorInfo.metrics);
+  // const metricsData = getLastSevenDaysMetrics(monitorInfo.metrics);
+  // const last24HoursData = getLast24HoursMetrics(monitorInfo.metrics);
 
-  console.log(getLastSevenDaysMetrics(monitorInfo.metrics))
-  console.log(metricsData)
-  console.log(last24HoursData)
+  // console.log(getLastSevenDaysMetrics(monitorInfo.metrics))
+  // console.log(metricsData)
+  // console.log(last24HoursData)
 
   return (
     <>
@@ -145,7 +145,7 @@ export default function ViewMonitor({ monitorInfo }: any) {
                       top: 0,
                       bottom: 0,
                     }}
-                    data={metricsData}
+                    data={monitorInfo.metrics}
                   >
                     <Bar
                       dataKey="steps"
@@ -195,7 +195,7 @@ export default function ViewMonitor({ monitorInfo }: any) {
                       top: 0,
                       bottom: 0,
                     }}
-                    data={last24HoursData}
+                    data={monitorInfo.metrics}
                   >
                     <Bar
                       dataKey="steps"

@@ -27,6 +27,8 @@ model User {
   sessions      Session[]
   websites      Website[]
   Authenticator Authenticator[]
+  incidents     Incident[]
+  notifications Notification[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -114,7 +116,7 @@ model Authenticator {
 
 model Website {
   id           Int      @id @default(autoincrement())
-  url          String   @unique
+  url          String   
   status       Int 
   responseTime Int
   uptime       Int
@@ -124,6 +126,7 @@ model Website {
   error        String?  
   userId       String
   metrics      Metric[]
+  incidents    Incident[]
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -137,4 +140,35 @@ model Metric {
   website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Incident {
+  id          Int      @id @default(autoincrement())
+  websiteId   Int
+  description String
+  status      String
+  userId      String
+  website     Website  @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startedAt   DateTime
+  resolvedAt  DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Notification {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  message     String
+  channels    Channel[]
+  read        Boolean  @default(false)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Channel {
+ email
+  phone_sms
+  slack
 }

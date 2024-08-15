@@ -27,6 +27,11 @@ import { columns } from "@/components/data-table/columns";
 import { getFetchedWebsites } from "@/app/actions";
 import { toast, Toaster } from 'react-hot-toast';
 import { DataTableLoading } from "@/components/data-table/data-table-skeleton";
+import { revalidatePath } from "next/cache";
+import { createClient } from '@supabase/supabase-js';
+import { Badge } from "@/components/ui/badge";
+
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
 const formSchema = z.object({
   url: z.string().url("Please enter a valid URL").startsWith("https://", "URL must start with https://"),
@@ -54,6 +59,37 @@ export default function Dashboard() {
       setDataFetched(true);
     };
     fetchWebsites();
+
+    // Set up real-time subscription
+    const channel = supabase
+      .channel('website-changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'Website' }, 
+        (payload) => {
+          console.log('Change received:', payload);
+          // Update websites based on the change
+          setWebsites((currentWebsites) => {
+            switch (payload.eventType) {
+              case 'INSERT':
+                return [...currentWebsites, payload.new];
+              case 'UPDATE':
+                return currentWebsites.map(site => 
+                  site.id === payload.new.id ? payload.new : site
+                );
+              case 'DELETE':
+                return currentWebsites.filter(site => site.id !== payload.old.id);
+              default:
+                return currentWebsites;
+            }
+          });
+        }
+      )
+      .subscribe();
+
+    // Cleanup function
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [session]);
 
   
@@ -83,7 +119,7 @@ export default function Dashboard() {
         }
       }),
       {
-        loading: 'Adding website...',
+        loading: 'Checking website endpoint...',
         success: (response) => {
           const addedWebsite = response.data;
           setWebsites([...websites, addedWebsite]);
@@ -92,9 +128,9 @@ export default function Dashboard() {
           setCheckInterval(5);
           return <b>Website added successfully!</b>;
         },
-        error: (error) => {
+         error: (error) => {
           console.error("Error adding website to monitor:", error);
-          return <b>Could not add website.</b>;
+          return error.message;
         },
       }
     ).finally(() => {
@@ -105,9 +141,14 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col gap-2 mx-10">
       <Toaster position="bottom-right" />
-      <h1 className="sticky top-0 z-[10] flex items-start justify-start bg-background/50 text-3xl font-bold backdrop-blur-lg">
-        <span>Monitors.</span>
+      <h1 className="sticky top-0 z-[10] flex items-center justify-start bg-background/50 text-3xl font-bold backdrop-blur-lg">
+        <span>Monitors<span className="text-green-500">.</span></span>
+        <Badge variant="outline" className="ml-5 py-2">All Operational <div className="flex ml-2 relative">
+              <span className={`w-3 h-3 ${status.value === 200 ? "bg-green-500" : "bg-green-500"} rounded-full`}></span>
+              <span className={`w-3 h-3 animate-ping ${status.value === 200 ? "bg-green-500" : "bg-green-500"} rounded-full absolute top-0 left-0`}></span>
+            </div></Badge>
       </h1>
+      <p className="text-sm text-gray-500">Monitors are websites that you want to monitor for availability, performance, and security.</p>
       <div className="flex flex-col items-end self-end gap-2">
         <Button 
           variant={"outline"} 

@@ -1,4 +1,4 @@
-"use strict";
+"use client";
 
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -21,7 +21,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { DialogHeader, DialogTitle, DialogContent, DialogDescription } from "@/components/ui/dialog";
+import { updateMonitor } from "@/app/actions";
+import toast from "react-hot-toast";
 
 interface EditProps {
   website?: {
@@ -30,14 +32,16 @@ interface EditProps {
     url: string;
     checkInterval: string;
   };
+  showActionToggle: (open: boolean) => void;
+  onConfirm: () => void;
 }
 
-const checkIntervals = ["1m", "5m", "15m", "30m", "1h", "6h", "12h", "24h"] as const;
+const checkIntervals = ["1m", "5m", "15m", "30m", "60m"] as const;
 
 const editSchema = z.object({
   id: z.number().optional(),
-  url: z.string().url({ message: "Invalid URL" }),
-  checkInterval: z.enum(checkIntervals),
+  url: z.string().url().optional(),
+  checkInterval: z.enum(checkIntervals).optional(),
 });
 
 type EditSchemaType = z.infer<typeof editSchema>;
@@ -48,19 +52,35 @@ export default function EditDialog({ website }: EditProps) {
     defaultValues: {
       id: website?.id,
       url: website?.url || "",
-      checkInterval: (website?.checkInterval as EditSchemaType["checkInterval"]) || "5m",
+      checkInterval: (website?.checkInterval as EditSchemaType['checkInterval']) || "5m",
     },
   });
 
-  function onSubmit(values: EditSchemaType) {
-    console.log(values);
-    // Here you would typically send the updated values to your backend
+  async function onSubmit(values: EditSchemaType) {
+    if (website?.id) {
+      try {
+        const formData = new FormData();
+        Object.entries(values).forEach(([key, value]) => {
+          if (value !== undefined) formData.append(key, value.toString());
+        });
+        await updateMonitor(website.id.toString(), formData);
+        toast.success("Monitor updated successfully");
+      } catch (error) {
+        console.error("Failed to update monitor:", error);
+        toast.error("Failed to update monitor");
+      }
+    }
   }
 
+  console.log("website", website?.url);
+
   return (
-    <>
+    <DialogContent>
       <DialogHeader>
         <DialogTitle>Edit Monitor Details</DialogTitle>
+        <DialogDescription>
+          Update the check interval for your website monitor.
+        </DialogDescription>
       </DialogHeader>
       <div className='py-4'>
         <Form {...form}>
@@ -86,7 +106,7 @@ export default function EditDialog({ website }: EditProps) {
                   <FormLabel>Check Interval</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -113,6 +133,6 @@ export default function EditDialog({ website }: EditProps) {
           </form>
         </Form>
       </div>
-    </>
+    </DialogContent>
   );
 }

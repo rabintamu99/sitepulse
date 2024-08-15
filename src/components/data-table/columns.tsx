@@ -8,7 +8,8 @@ import { DataTableColumnHeader } from "./data-table-column-header";
 import { DataTableRowActions } from "./data-table-row-actions";
 import { WebsiteType } from "@/lib/validations/schema";
 import { status_options } from "../filters";
-import { differenceInSeconds, formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, differenceInSeconds, parseISO } from "date-fns";
+import NumberTicker from "../magicui/number-ticker";
 
 export const columns: ColumnDef<WebsiteType>[] = [
   {
@@ -82,14 +83,14 @@ export const columns: ColumnDef<WebsiteType>[] = [
     ),
     cell: ({ row }) => (
       <div className='flex items-center'>
-        <span>{row.getValue("responseTime")} ms</span>
+        <NumberTicker value={row.getValue("responseTime")} />
+        <span>ms</span>
       </div>
     ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
-  
   {
     accessorKey: "updatedAt",
     header: ({ column }) => (
@@ -97,19 +98,34 @@ export const columns: ColumnDef<WebsiteType>[] = [
     ),
     cell: ({ row }) => {
       try {
-        const field = new Date(row.getValue("updatedAt"));
-        if (isNaN(field.getTime())) {
+        const updatedAt = row.getValue("updatedAt");
+        let date: Date;
+  
+        if (updatedAt instanceof Date) {
+          date = updatedAt;
+        } else if (typeof updatedAt === 'string') {
+          date = new Date(updatedAt);
+        } else if (typeof updatedAt === 'number') {
+          date = new Date(updatedAt);
+        } else {
+          throw new Error("Invalid date format");
+        }
+  
+        if (isNaN(date.getTime())) {
           throw new Error("Invalid date");
         }
+  
+        // Convert to local time
+        const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
         
         const now = new Date();
-        const diffInSeconds = differenceInSeconds(now, field);
+        const diffInSeconds = differenceInSeconds(now, localDate);
         
         if (diffInSeconds < 60) {
           return <div>Just now</div>;
         } else {
-          const formattedUpdatedAt = formatDistanceToNow(field, { addSuffix: true });
-          return <div>{formattedUpdatedAt}</div>;
+          const formattedTime = formatDistanceToNow(localDate, { addSuffix: true });
+          return <div>{formattedTime}</div>;
         }
       } catch (error) {
         console.error("Error formatting date:", error);

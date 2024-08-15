@@ -40,11 +40,13 @@ export function DataTableRowActions<TData>({
     React.useState<React.ReactNode | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] =
     React.useState<boolean>(false);
+  const [showEditDialog, setShowEditDialog] = React.useState<boolean>(false);
   const websites = row.original as any;
   const router = useRouter(); 
 
   const handleEditClick = () => {
-    setDialogContent(<EditDialog websites={websites as any} />);
+    setDialogContent(<EditDialog website={websites} showActionToggle={setShowEditDialog} onConfirm={() => {}} />);
+    setShowEditDialog(false);
   };
 
   const handleViewClick = () => {

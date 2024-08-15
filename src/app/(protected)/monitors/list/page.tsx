@@ -1,3 +1,4 @@
+"use client"
 import { columns } from "@/components/data-table/columns";
 import { DataTable } from "@/components/data-table/data-table";
 import { Shell } from "@/components/shells/shell";

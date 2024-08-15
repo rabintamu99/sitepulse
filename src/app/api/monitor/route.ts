@@ -65,16 +65,20 @@ export async function GET(request: Request) {
     const ttfb = response.headers['request-startTime'] ? parseFloat(response.headers['request-startTime']) - start : null;
     const sslInfo = await getSSLInfo(targetUrl);
 
-    // Upsert website and get the website ID
+    // Find the existing website
+    const existingWebsite = await prisma.website.findFirst({
+      where: { url: targetUrl }
+    });
+
     const website = await prisma.website.upsert({
-      where: { url: targetUrl },
+      where: { id: existingWebsite?.id ?? -1 },
       update: {
         status: response.status,
         responseTime: responseTime,
         ttfb: ttfb,
         sslInfo: sslInfo,
         error: null,
-        uptime: 100, // Added this line
+        uptime: 100,
         checkInterval
       },
       create: {
@@ -112,7 +116,7 @@ export async function GET(request: Request) {
   } catch (error) {
     // Upsert website status as down in the database
     const website = await prisma.website.upsert({
-      where: { url: targetUrl },
+      where: { id: existingWebsite?.id ?? -1 },
       update: {
         status: 500,
         error: (error as Error).message,
