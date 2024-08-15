@@ -1,4 +1,5 @@
 import { Home, Settings, CreditCard, AudioLines, ActivityIcon } from 'lucide-react'
+import { BsFillExclamationTriangleFill } from "react-icons/bs";
 
 export const clients = [...new Array(10)].map((client, index) => ({
   href: `/${index + 1}.png`,
@@ -87,6 +88,7 @@ export const products = [
 
 export const menuOptions = [
   { name: 'Monitors', Component: ActivityIcon, href: '/monitors' },
+  { name: 'Incidents', Component:BsFillExclamationTriangleFill, href:'/incidents'},
   { name: 'Connections', Component: AudioLines, href: '/connections' },
   { name: 'Settings', Component: Settings, href: '/settings' },
   { name: 'Billing', Component: CreditCard, href: '/billing' },

@@ -21,7 +21,7 @@ export const {
     signIn,
     signOut,
 } = NextAuth({
-    debug: true,
+    debug: false,
     adapter: PrismaAdapter(prisma),
     ...authConfig,
     providers: [

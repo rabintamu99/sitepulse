@@ -10,7 +10,6 @@ export async function getFetchedWebsites() {
       userId: session?.user?.id,
     },
   });
-    // console.log("fetchedWebsites", fetchedWebsites);
     return fetchedWebsites;
 }
 
@@ -53,5 +52,26 @@ export async function deleteMonitor(id: string) {
     where: {
       id: parseInt(id),
     },
+  });
+}
+
+export async function updateMonitor(id: string, data: FormData) {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  const website = await prisma.website.findFirst({
+    where: {
+      id: parseInt(id),
+      userId: userId,
+    },
+  });
+
+  if (!website) {
+    throw new Error("Website not found or you do not have permission to update it.");
+  }
+
+  return await prisma.website.update({
+    where: { id: parseInt(id) },
+    data: { checkInterval: data.checkInterval },
   });
 }
