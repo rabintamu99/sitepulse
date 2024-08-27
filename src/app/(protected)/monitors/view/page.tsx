@@ -3,31 +3,29 @@
 import React, { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import ViewMonitor from '@/components/monitor/ViewMonitor';
+import { fetchMonitorInfo } from '@/app/actions';
 
 export default function ViewMonitorPage({ searchParams }: { searchParams: { id: string } }) {
   const [monitorInfo, setMonitorInfo] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const supabase = createClientComponentClient();
 
   useEffect(() => {
-    const monitorId = parseInt(searchParams.id, 10);
-
-    // Initial fetch
-    const fetchMonitorInfo = async () => {
-      const { data, error } = await supabase
-        .from('Website')
-        .select('*, user:userId(*), Metric(*)')
-        .eq('id', monitorId)
-        .single();
-
-      if (error) console.error('Error fetching monitor info:', error);
-      else setMonitorInfo(data);
+    const getMonitorInfo = async () => {
+      try {
+        const data = await fetchMonitorInfo(searchParams.id);
+        setMonitorInfo(data);
+      } catch (error) {
+        console.error('Error fetching monitor info:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchMonitorInfo();
-
-    console.log("monitorInfo", monitorInfo)
+    getMonitorInfo();
 
     // Set up realtime subscription
+    const monitorId = parseInt(searchParams.id, 10);
     const subscription = supabase
       .channel(`website:${monitorId}`)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'website', filter: `id=eq.${monitorId}` }, (payload) => {
@@ -42,7 +40,9 @@ export default function ViewMonitorPage({ searchParams }: { searchParams: { id: 
     };
   }, [searchParams.id, supabase]);
 
-  if (!monitorInfo) return <div>Loading...</div>;
+  if (loading) return <div>Loading...</div>;
+
+  console.log("monitorInfo", monitorInfo)
 
   return (
     <div className='h-full w-full overflow-y-auto'>

@@ -75,3 +75,21 @@ export async function updateMonitor(id: string, data: FormData) {
     data: { checkInterval: data.checkInterval },
   });
 }
+ 
+
+export async function fetchMonitorInfo(id: string) {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  const monitorInfo = await prisma.website.findFirst({
+    where: {
+      id: parseInt(id),
+      userId: userId,
+    },
+    include: {
+      metrics: true,
+    },
+  });
+
+  return monitorInfo;
+}

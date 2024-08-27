@@ -121,7 +121,9 @@ model Website {
   responseTime Int
   uptime       Int
   ttfb         Float?
-  sslInfo      Json?
+  dnsTime      Float?
+  sslExpiry     DateTime?
+  domainExpiry  DateTime?
   checkInterval String? @default("5")
   error        String?  
   userId       String
@@ -168,7 +170,7 @@ model Notification {
 }
 
 enum Channel {
- email
+  email
   phone_sms
   slack
 }
