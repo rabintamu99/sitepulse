@@ -13,7 +13,7 @@ interface DataTableLoadingProps {
   rowCount?: number
 }
 
-export function DataTableLoading({
+export default function DataTableLoading({
   columnCount,
   rowCount = 10,
 }: DataTableLoadingProps) {

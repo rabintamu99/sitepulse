@@ -81,14 +81,33 @@ export default function ResponseChart({ monitorInfo }: { monitorInfo: MonitorInf
       .filter((metric) => {
         const metricDate = new Date(metric.createdAt);
         return metricDate >= startDate && metricDate <= now;
-      })
-      .map((metric) => ({
+      });
+
+    if (days === 1) {
+      // For 24 hours, return all data points
+      return filteredData.map((metric) => ({
         date: metric.createdAt,
         responseTime: metric.responseTime
-      }));
+      })).reverse();
+    } else {
+      // For other time ranges, aggregate data by day
+      const aggregatedData = filteredData.reduce((acc, metric) => {
+        const date = new Date(metric.createdAt).toISOString().split('T')[0];
+        if (!acc[date]) {
+          acc[date] = { sum: 0, count: 0 };
+        }
+        acc[date].sum += metric.responseTime;
+        acc[date].count += 1;
+        return acc;
+      }, {} as Record<string, { sum: number, count: number }>);
 
-    console.log("Filtered data:", filteredData);
-    return filteredData.reverse(); // Reverse to show oldest data first
+      return Object.entries(aggregatedData)
+        .map(([date, { sum, count }]) => ({
+          date,
+          responseTime: Math.round(sum / count)
+        }))
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    }
   }
 
   const chartData = React.useMemo(() => {

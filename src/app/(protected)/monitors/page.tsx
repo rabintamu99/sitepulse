@@ -26,7 +26,7 @@ import { DataTable } from "./data-table";
 import { columns } from "@/components/data-table/columns";
 import { getFetchedWebsites } from "@/app/actions";
 import { toast, Toaster } from 'react-hot-toast';
-import { DataTableLoading } from "@/components/data-table/data-table-skeleton";
+import DataTableLoading from "@/components/data-table/data-table-skeleton";
 import { revalidatePath } from "next/cache";
 import { createClient } from '@supabase/supabase-js';
 import { Badge } from "@/components/ui/badge";

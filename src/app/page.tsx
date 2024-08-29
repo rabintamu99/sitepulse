@@ -8,7 +8,7 @@ import Pricing from '@/components/pricing';
 
 const Home = () => {
   return (
-    <main className=' max-w-[1200px] mx-auto'>
+    <main className=' max-w-full mx-auto'>
       <Header />
       <Hero />
       <Features />

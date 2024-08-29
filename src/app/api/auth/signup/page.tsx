@@ -18,7 +18,7 @@ export default function Signup() {
           <h2 className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
             SitePulse
           </h2>
-            <p className="text-balance text-muted-foreground">
+            <p className="text-lg text-muted-foreground">
               Signup to your account using Github or Google
             </p>
           </div>
@@ -29,11 +29,11 @@ export default function Signup() {
                 await signIn("github", { redirectTo: "/dashboard" })
               }}
             >
-              <Button variant={"outline"} className="w-full py-2" type="submit"><FaGithub className="mr-2"/>Continue with Github</Button>
+              <Button variant={"outline"} className="w-full py-6 text-lg" type="submit"><FaGithub className="mr-2"/>Continue with Github</Button>
             </form>
             <div className="flex items-center mb-4">
               <div className="flex-grow h-px bg-gray-300" />
-              <span className="mx-4 text-sm text-gray-500">OR CONTINUE WITH</span>
+              <span className="mx-4 text-lg text-gray-500">OR CONTINUE WITH</span>
               <div className="flex-grow h-px bg-gray-300" />
             </div>
             <form
@@ -42,12 +42,12 @@ export default function Signup() {
                 await signIn("google", { redirectTo: "/dashboard" })
               }}
             >
-              <Button variant={"outline"} className="w-full py-2" type="submit"><FcGoogle className="mr-2"/>Continue with Google</Button>
+              <Button variant={"outline"} className="w-full py-6 text-lg" type="submit"><FcGoogle className="mr-2"/>Continue with Google</Button>
             </form>
           </div>
-          <div className="mt-4 text-center text-sm">
+          <div className="mt-4 text-center text-lg">
             Already have an account?{" "}
-            <Link href="/auth/signin" className="underline">
+            <Link href="/auth/signin" className="underline text-lg">
               Sign In
             </Link>
           </div>

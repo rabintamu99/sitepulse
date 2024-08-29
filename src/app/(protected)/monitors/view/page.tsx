@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import ViewMonitor from '@/components/monitor/ViewMonitor';
 import { fetchMonitorInfo } from '@/app/actions';
+import DataTableLoading from '@/components/data-table/data-table-skeleton';
 
 export default function ViewMonitorPage({ searchParams }: { searchParams: { id: string } }) {
   const [monitorInfo, setMonitorInfo] = useState<any>(null);
@@ -40,7 +41,7 @@ export default function ViewMonitorPage({ searchParams }: { searchParams: { id: 
     };
   }, [searchParams.id, supabase]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><DataTableLoading columnCount={2} rowCount={4} /></div>;
 
   console.log("monitorInfo", monitorInfo)
 

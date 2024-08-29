@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { signIn } from "../../../../auth"
 import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 
 export default function Signin() {
   return (
@@ -11,7 +12,7 @@ export default function Signin() {
       <div className="absolute top-8 left-10">
         <Link href="/" className="text-muted-foreground">← Back to SitePulse</Link>
       </div>
-      <div className="flex items-center justify-center py-12">
+      <div className="flex items-center justify-center py-12 mt-2">
         <GlobeComponent />
       </div>
       <div className="flex flex-col items-center justify-center py-12">
@@ -36,7 +37,7 @@ export default function Signin() {
                 required
               />
       <Button type="submit" className="w-full mt-5">
-              Signin with Email
+              Login with Email
             </Button>
     </form>
             <div className="flex items-center mb-4">
@@ -50,7 +51,15 @@ export default function Signin() {
                 await signIn("google", { redirectTo: "/dashboard" })
               }}
             >
-              <Button variant={"outline"} className="w-full py-2" type="submit"><FcGoogle className="mr-2"/>Sign in with Google</Button>
+              <Button variant={"outline"} className="w-full py-2 text-md" type="submit"><FcGoogle className="mr-2"/>Login with Google</Button>
+            </form>
+            <form
+              action={async () => {
+                "use server"
+                await signIn("github", { redirectTo: "/dashboard" })
+              }}
+            >
+              <Button variant={"outline"} className="w-full py-2 text-md" type="submit"><FaGithub className="mr-2"/>Login with Github</Button>
             </form>
           </div>
           <div className="mt-4 text-center text-sm">
