@@ -11,56 +11,91 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-5">
-      <div className="container mx-auto">
-      <h2 className="text-3xl font-bold text-center  mb-2">Discover the Power of SitePulse</h2>
-      <p className="text-center  mb-10">Explore the features that make SitePulse the ultimate tool for website monitoring and performance.</p>
-        <div className="grid gap-8 mt-10 md:grid-cols-3">
-           <WobbleCard
-        containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]"
-        className=""
-      >
-        <div className="max-w-xs">
-          <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] ">
-            {features[0].title}
-          </h2>
-          <p className="mt-4 text-left  text-base/6 text-neutral-200">
-            {features[0].description}
-          </p>
-        </div>
-        <Image
-          src="/public/image1.png"
-          width={500}
-          height={500}
-          alt="linear demo image"
-          className="absolute -right-4 lg:-right-[40%] grayscale filter -bottom-10 object-contain rounded-2xl"
-        />
-      </WobbleCard>
-      <WobbleCard containerClassName="col-span-1 min-h-[300px]">
-        <h2 className="max-w-80  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] ">
-          {features[1].title}
-        </h2>
-        <p className="mt-4 max-w-[26rem] text-left  text-base/6 ">
-         {features[1].description}
+    <section id="features" className="py-10 bg-green-50 w-full px-4 md:px-10">
+      <div className="w-full mx-auto">
+        <h1 className="text-3xl md:text-4xl font-bold text-center">
+          Discover the Power of SitePulse
+        </h1>
+        <p className="text-center mb-10">
+          Explore the features that make SitePulse the ultimate tool for website monitoring and performance.
         </p>
-      </WobbleCard>
-      <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-blue-900 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
-        <div className="max-w-sm">
-          <h2 className="max-w-sm md:max-w-lg  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] ">
-            {features[2].title}
-          </h2>
-          <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
-            {features[2].description}
-          </p>
-        </div>
-        <Image
-          src="/public/image1.png"
-          width={500}
-          height={500}
-          alt="linear demo image"
-          className="absolute -right-10 md:-right-[40%] lg:-right-[20%] -bottom-10 object-contain rounded-2xl"
-        />
-      </WobbleCard>
+        <div className="mt-10"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5 px-10">
+          {/* First WobbleCard at position 1 */}
+          <WobbleCard
+            containerClassName="col-span-1 bg-white shadow hover:bg-gray-100 rounded-lg"
+          >
+            <h2 className="text-left text-xl font-semibold text-red-500">
+              {features[0].title}
+            </h2>
+            <p className="mt-2 text-left text-base text-gray-700">
+              {features[0].description}
+            </p>
+            <Image
+              src="https://ai-saas-template-aceternity.vercel.app/_next/image?url=%2Fheader.png&w=3840&q=75"
+              width={500}
+              height={300}
+              alt="feature image"
+              className="mt-2 rounded-lg max-h-48 object-cover"
+            />
+          </WobbleCard>
+
+          {/* Second WobbleCard at position 2 */}
+          <WobbleCard
+            containerClassName="col-span-1 bg-white shadow hover:bg-gray-100 rounded-lg"
+          >
+            <h2 className="text-left text-xl font-semibold text-red-500">
+              {features[1].title}
+            </h2>
+            <p className="mt-2 text-left text-base text-gray-700">
+              {features[1].description}
+            </p>
+            <Image
+              src="https://ai-saas-template-aceternity.vercel.app/_next/image?url=%2Fheader.png&w=3840&q=75"
+              width={500}
+              height={300}
+              alt="feature image"
+              className="mt-2 rounded-lg max-h-48 object-cover"
+            />
+          </WobbleCard>
+
+          {/* Third WobbleCard at position 3 */}
+          <WobbleCard
+            containerClassName="col-span-1 md:col-span-2 lg:col-span-2 bg-white shadow hover:bg-gray-100 rounded-lg"
+          >
+            <h2 className="text-left text-xl font-semibold text-red-500">
+              {features[2].title}
+            </h2>
+            <p className="mt-2 text-left text-base text-gray-700">
+              {features[2].description}
+            </p>
+            <Image
+              src="https://ai-saas-template-aceternity.vercel.app/_next/image?url=%2Fheader.png&w=3840&q=75"
+              width={500}
+              height={300}
+              alt="feature image"
+              className="mt-2 rounded-lg max-h-48 object-cover"
+            />
+          </WobbleCard>
+
+          {/* Fourth WobbleCard at position 4 */}
+          <WobbleCard
+            containerClassName="row-span-1 md:row-span-2 col-span-1 lg:col-span-1 bg-white shadow hover:bg-gray-100 rounded-lg"
+          >
+            <h2 className="text-left text-xl font-semibold text-red-500">
+              Right Section
+            </h2>
+            <p className="mt-2 text-left text-base text-gray-700">
+              This section covers the height of the left section.
+            </p>
+            <Image
+              src="https://ai-saas-template-aceternity.vercel.app/_next/image?url=%2Fheader.png&w=3840&q=75"
+              width={500}
+              height={300}
+              alt="feature image"
+              className="mt-2 rounded-lg max-h-48 object-cover"
+            />
+          </WobbleCard>
         </div>
       </div>
     </section>

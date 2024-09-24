@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        domains: ['ai-saas-template-aceternity.vercel.app'],
+      },
+};
 
 export default nextConfig;

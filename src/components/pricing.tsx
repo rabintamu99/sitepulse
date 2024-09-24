@@ -8,7 +8,7 @@ import { CardContainer, CardBody, CardItem } from './ui/3d-card';
 const Pricing = () => {
   return (
     <div>
-      <LampContainer>
+      {/* <LampContainer>
         <motion.h1
           initial={{ opacity: 0.5, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -21,8 +21,8 @@ const Pricing = () => {
         >
           Start for Free at $0
         </motion.h1>
-      </LampContainer>
-      <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8 -mt-72">
+      </LampContainer> */}
+      <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8 mt-8">
         <CardContainer className="inter-var ">
           <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-neutral-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-full md:!w-[350px] h-auto rounded-xl p-6 border">
             <CardItem translateZ="50" className="text-xl font-bold text-neutral-600 dark: ">

@@ -8,14 +8,14 @@ import { FaGithub } from "react-icons/fa";
 
 export default function Signin() {
   return (
-    <div className="w-full h-screen dark:bg-black bg-white grid lg:grid-cols-2">
+    <div className="w-full h-screen dark:bg-black bg-white grid">
       <div className="absolute top-8 left-10">
         <Link href="/" className="text-muted-foreground">← Back to SitePulse</Link>
       </div>
-      <div className="flex items-center justify-center py-12 mt-2">
+      {/* <div className="flex items-center justify-center py-12 mt-2">
         <GlobeComponent />
-      </div>
-      <div className="flex flex-col items-center justify-center py-12">
+      </div> */}
+      <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Login</h1>
